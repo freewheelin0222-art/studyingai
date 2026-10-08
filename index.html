@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>工学系技術者のAI学習ノート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDEFF3;--panel:#F8FAFC;--ink:#17202E;--muted:#55637A;--line:#C9D0DC;--accent:#2F5BB7;--heat:#B2492D;--glow:#4A54B0;--warm-soft:#F4DED4;--cool-soft:#DCE2F5;--mineral:#5B6068;--gold:#a9792f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1420;--panel:#111D2C;--ink:#E2E8F2;--muted:#8E9BB0;--line:#243246;--accent:#7FA8EE;--heat:#E88A6A;--glow:#9098EC;--warm-soft:#3A2219;--cool-soft:#182540;--mineral:#99A0AA;--gold:#d8ab62;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1420;--panel:#111D2C;--ink:#E2E8F2;--muted:#8E9BB0;--line:#243246;--accent:#7FA8EE;--heat:#E88A6A;--glow:#9098EC;--warm-soft:#3A2219;--cool-soft:#182540;--mineral:#99A0AA;--gold:#d8ab62;color-scheme:dark}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP","Yu Gothic",system-ui,sans-serif;font-size:16px;line-height:1.75}
+h1,h2{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;line-height:1.35;margin:0}
+h1{font-size:clamp(28px,7vw,40px);letter-spacing:.02em}
+h2{font-size:24px;margin-bottom:6px}
+h3{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:20px;margin:28px 0 4px}
+main{max-width:720px;margin:0 auto;padding:0 18px 48px}
+section{padding:34px 0 8px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.lead{color:var(--muted);margin:0 0 18px}
+.note{font-size:14px;color:var(--muted);margin:12px 0 0}
+.say{margin:14px 0 0;padding:12px 14px;background:var(--panel);border-left:3px solid var(--glow);font-size:15px}
+p{margin:12px 0 0}
+ul,ol{margin:12px 0 0;padding-left:22px}
+li{margin:6px 0}
+code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.92em;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+pre{margin:14px 0 0;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-x:auto;font-size:13.5px;line-height:1.7}
+pre code{background:none;border:0;padding:0}
+button{font:inherit;font-size:15px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:14.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:13.5px;white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+
+/* topbar / drawer */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.tb-row{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 18px}
+#menuBtn{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;font-size:14px;flex:none;white-space:nowrap}
+.burger{display:inline-flex;flex-direction:column;gap:3px}.burger i{display:block;width:16px;height:2px;background:var(--ink);border-radius:1px}
+.brand{min-width:0;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:clamp(14px,4vw,17px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#scrim{position:fixed;inset:0;background:rgba(5,12,22,.45);z-index:20}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(318px,86vw);z-index:21;background:var(--panel);border-right:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 18px) 0 calc(env(safe-area-inset-bottom,0px) + 18px);overflow-y:auto}
+.dhead{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:18px;padding:0 20px 14px;border-bottom:1px solid var(--line)}
+#drawer a{display:block;padding:11px 20px;color:var(--ink);text-decoration:none;font-weight:700;border-left:3px solid transparent;font-size:15px}
+#drawer a small{display:block;font-weight:400;font-size:12.5px;color:var(--muted);line-height:1.5}
+#drawer a[aria-current="page"]{border-left-color:var(--glow);background:var(--cool-soft)}
+.dgroup{font-size:13px;color:var(--muted);padding:16px 20px 4px;border-top:1px solid var(--line);margin-top:8px}
+
+/* home timeline */
+.hero{padding:30px 0 4px;border-bottom:none}
+.hero h1{font-size:clamp(22px,6vw,30px);line-height:1.35;margin-bottom:10px}
+.tl-lesson{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;color:var(--gold);font-size:15px;letter-spacing:.08em;margin-bottom:6px}
+.tl{position:relative;margin:26px 0 0}
+.tl::before{content:"";position:absolute;left:62px;top:0;bottom:0;width:2px;background:var(--gold)}
+.tl-cap{position:relative;display:grid;grid-template-columns:62px 1fr;align-items:center;padding:6px 0 18px}
+.tl-cap-end{padding:16px 0 6px}
+.tl-cap-end::before{content:"";position:absolute;left:64px;right:0;top:0;border-top:1px solid var(--line)}
+.tl-end{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;color:var(--gold);font-size:26px;line-height:1;text-align:center;padding-right:12px}
+.tl-flow{padding-left:24px;font-size:13px;color:var(--muted);letter-spacing:.14em}
+.tl-item{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);padding:22px 0;color:var(--ink);text-decoration:none}
+.tl-item:not(:first-of-type)::before{content:"";position:absolute;left:64px;right:0;top:0;border-top:1px solid var(--line)}
+.tl-no{position:relative;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-size:18px;line-height:1.1;color:var(--gold);text-align:right;padding:4px 14px 0 0;font-variant-numeric:tabular-nums}
+.tl-no::after{content:"";position:absolute;right:0;top:12px;width:10px;height:1.5px;background:var(--gold)}
+.tl-body{padding:0 4px 0 22px}
+.tl-t{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-size:19px;font-weight:800;line-height:1.5;margin:0 0 6px}
+.tl-d{margin:0;font-size:14px;line-height:1.8;color:var(--muted)}
+.tl-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tl-tags span{border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:1px 10px;font-size:12.5px;white-space:nowrap}
+.tl-item:hover .tl-t,.tl-item:focus-visible .tl-t{color:var(--accent)}
+.tl-item:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+.tl-era{position:relative;display:grid;grid-template-columns:62px 1fr;padding:14px 0 2px}
+.tl-era b{grid-column:2;padding-left:22px;font-family:"Shippori Mincho",serif;font-size:14px;color:var(--gold);letter-spacing:.1em}
+
+/* chapter map on home */
+.chapmap{list-style:none;counter-reset:ch;margin:18px 0 0;padding:0}
+.chapmap li{counter-increment:ch;border-top:1px solid var(--line)}
+.chapmap li:last-child{border-bottom:1px solid var(--line)}
+.chapmap a{display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:10px;padding:18px 0;color:var(--ink);text-decoration:none}
+.chapmap a::before{content:counter(ch);grid-row:1 / span 2;font-family:"Shippori Mincho",serif;font-size:28px;font-weight:800;color:var(--glow);line-height:1.1}
+.chapmap b{font-size:16.5px}
+.chapmap span{font-size:13.5px;color:var(--muted);line-height:1.7}
+.chapmap li.epi a::before{content:"★";font-size:20px}
+
+/* chapter page */
+.chap{margin:12px 0 0;padding:18px 0 0}
+.chapno{font-size:14px;color:var(--glow);font-weight:700}
+.chapt{font-size:27px;margin:2px 0 6px}
+.chap p{color:var(--muted);margin:0}
+.chapnav{display:flex;flex-direction:column;gap:10px;margin:36px 0 10px}
+.chapnav a{display:block;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+.chapnav a:last-child{text-align:right}
+
+/* components */
+.crux{margin:20px 0 0;padding:14px 16px;border:1px solid var(--heat);border-radius:12px;background:var(--warm-soft)}
+.crux .lbl{display:inline-block;font-size:12px;font-weight:700;color:var(--bg);background:var(--heat);border-radius:4px;padding:1px 8px}
+.crux b.t{display:block;font-size:17px;margin:4px 0 2px}
+.crux p{margin:4px 0 0;font-size:15px;color:var(--ink)}
+details.why{margin:14px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:0 14px}
+details.why summary{cursor:pointer;font-weight:700;padding:11px 0}
+details.why>div{padding:0 0 12px;font-size:15px}
+.card{margin-top:12px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.big{font-family:"Shippori Mincho",serif;font-size:32px;font-weight:800;color:var(--heat);line-height:1.2}
+.ctl{margin:16px 0 0}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;font-weight:500;gap:12px}
+.ctl label output{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:4px 0 0}
+select{font:inherit;font-size:15px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+input[type=text]{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);width:100%}
+dl.read{margin:16px 0 0;padding:0}
+dl.read div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+dl.read dt{color:var(--muted);font-size:15px}
+dl.read dd{margin:0;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.stages{list-style:none;margin:18px 0 0;padding:0;border-left:2px solid var(--glow)}
+.stages li{position:relative;padding:0 0 20px 18px}
+.stages li::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--glow)}
+.stages .sw{font-size:13px;color:var(--glow);font-weight:700}
+.stages h3{margin:2px 0 4px;font-size:18px}
+.stages p{margin:4px 0 0;font-size:15px;color:var(--ink)}
+.lab{display:block;margin:20px 0 0;padding:16px 18px;border:2px solid var(--glow);border-radius:12px;background:var(--cool-soft);color:var(--ink);text-decoration:none}
+.lab .k{display:inline-block;font-size:12px;font-weight:700;color:var(--bg);background:var(--glow);border-radius:4px;padding:1px 9px}
+.lab b{display:block;font-family:"Shippori Mincho",serif;font-size:19px;margin:6px 0 2px}
+.lab span{display:block;font-size:14px;color:var(--muted);line-height:1.7}
+.lab:hover{border-color:var(--accent)}
+.bars{margin:14px 0 0}
+.barrow{display:grid;grid-template-columns:76px 1fr 58px;align-items:center;gap:10px;margin:5px 0;font-size:14px}
+.barrow i{display:block;height:16px;border-radius:3px;background:var(--glow);min-width:2px}
+.barrow em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.tabs button{flex:none;border-radius:999px;padding:6px 14px;font-size:14px}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+
+/* quiz */
+.qwrap{margin:16px 0 0}
+.qcard{padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.qmeta{font-size:13px;color:var(--muted)}
+.qtext{font-weight:700;font-size:16.5px;margin:6px 0 2px;line-height:1.65}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.opts button{text-align:left;line-height:1.6;padding:10px 13px}
+.opts button.ok{border-color:var(--glow);background:var(--cool-soft)}
+.opts button.ng{border-color:var(--heat);background:var(--warm-soft)}
+.expl{margin-top:12px;padding:12px 14px;border-left:3px solid var(--glow);background:var(--bg);font-size:14.5px;border-radius:0 8px 8px 0}
+.score{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+footer{max-width:720px;margin:0 auto;padding:0 18px 40px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+.page section:last-child{border-bottom:none}
+.pagehead{padding:26px 0 0}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-row">
+    <button id="menuBtn" aria-expanded="false" aria-controls="drawer"><span aria-hidden="true" class="burger"><i></i><i></i><i></i></span>メニュー</button>
+    <div class="brand" id="pageTitle">工学系技術者のAI学習ノート</div>
+  </div>
+</div>
+<div id="scrim" hidden></div>
+
+<aside id="drawer" aria-label="サイトメニュー" hidden>
+  <div class="dhead">工学系技術者のAI学習ノート</div>
+  <a href="#/home" data-pg="home">目次：AIの歴史<small>1956年から今日までの時系列</small></a>
+  <div class="dgroup">本編</div>
+  <a href="#/ch1" data-pg="ch1" class="sub">第1章　AIは何をしているのか</a>
+  <a href="#/ch2" data-pg="ch2" class="sub">第2章　モデルはどう作られるか</a>
+  <a href="#/ch3" data-pg="ch3" class="sub">第3章　Transformerという転換点</a>
+  <a href="#/ch4" data-pg="ch4" class="sub">第4章　画像のAIと言語のAI</a>
+  <a href="#/ch5" data-pg="ch5" class="sub">第5章　知識をどう扱うか</a>
+  <a href="#/ch6" data-pg="ch6" class="sub">第6章　手元で動かす</a>
+  <a href="#/ch7" data-pg="ch7" class="sub">第7章　繋ぐ</a>
+  <a href="#/ch8" data-pg="ch8" class="sub">第8章　ゼロから育てる</a>
+  <div class="dgroup">付録</div>
+  <a href="#/apx" data-pg="apx">用語・計算式・理解度チェック<small>早見表と全30問のテスト</small></a>
+</aside>
+
+<main>
+
+<!-- ======================= HOME ======================= -->
+<div class="page" id="pg-home">
+  <div class="hero">
+    <div class="tl-lesson">工学系技術者のAI学習ノート</div>
+    <h1>AIは何をしているのか、<br>手を動かして確かめる</h1>
+    <p class="lead">専門家向けではありません。設備や制御を扱ってきた技術者が、AIを「判断できる程度に」理解するためのノートです。まず歴史を一本の線で見てから、各章へ進んでください。</p>
+  </div>
+
+  <section style="border-bottom:none;padding-top:10px">
+    <div class="tl">
+      <div class="tl-cap"><span class="tl-end">始</span><span class="tl-flow">記号から統計へ</span></div>
+
+      <div class="tl-era"><b>第一期　考える機械の夢</b></div>
+
+      <a class="tl-item" href="#/ch1">
+        <div class="tl-no">1956</div>
+        <div class="tl-body">
+          <div class="tl-t">ダートマス会議</div>
+          <p class="tl-d">「人工知能（Artificial Intelligence）」という言葉がここで生まれました。知能は記号とルールで書き下せる、という前提で研究が始まります。この前提が覆るまでに半世紀かかりました。</p>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch2">
+        <div class="tl-no">1958</div>
+        <div class="tl-body">
+          <div class="tl-t">パーセプトロン</div>
+          <p class="tl-d">数値を調整して学習する機械の原型。入力に重みを掛けて足すという構造は、いまのニューラルネットワークと変わりません。ただし当時は層を重ねる方法がなく、できることが限られていました。</p>
+          <div class="tl-tags"><span>重み</span><span>学習</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch2">
+        <div class="tl-no">1986</div>
+        <div class="tl-body">
+          <div class="tl-t">誤差逆伝播法が広まる</div>
+          <p class="tl-d">出力の誤差から、各重みを「どちらにどれだけ動かせば誤差が減るか」を逆算する方法。これが<b>勾配</b>です。層を重ねたネットワークを学習させる道が開きました。いまのLLMも、計算の芯はここから変わっていません。</p>
+          <div class="tl-tags"><span>勾配</span><span>第2章</span></div>
+        </div>
+      </a>
+
+      <div class="tl-era"><b>第二期　深層学習の爆発</b></div>
+
+      <a class="tl-item" href="#/ch3">
+        <div class="tl-no">1997</div>
+        <div class="tl-body">
+          <div class="tl-t">LSTM — 系列を順番に処理する</div>
+          <p class="tl-d">文章のような並びを扱うため、前の単語の処理結果を次へバトンのように引き継ぐ方式。長らく主流でしたが、順番待ちが発生するため並列化できず、規模を上げられませんでした。</p>
+          <div class="tl-tags"><span>逐次処理</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch4">
+        <div class="tl-no">2012</div>
+        <div class="tl-body">
+          <div class="tl-t">AlexNet — GPUの時代へ</div>
+          <p class="tl-d">画像認識のコンペで、深層学習が従来手法を大差で破りました。勝因は新しい理論ではなく、大量のデータとGPUによる計算量です。「設計より物量」という流れが、ここから始まります。</p>
+          <div class="tl-tags"><span>CNN</span><span>GPU</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch2">
+        <div class="tl-no">2013</div>
+        <div class="tl-body">
+          <div class="tl-t">word2vec — 言葉が座標を持つ</div>
+          <p class="tl-d">単語を数百次元のベクトルに変換すると、意味の近い語が近くに配置される。誰も「この語とこの語を近づけろ」と指示していないのに、予測誤差を減らす過程で勝手にそうなりました。</p>
+          <div class="tl-tags"><span>埋め込み</span><span>第2章</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch4">
+        <div class="tl-no">2015</div>
+        <div class="tl-body">
+          <div class="tl-t">YOLO — 一度見るだけ</div>
+          <p class="tl-d">物体を「探す」のをやめ、画像を格子に区切って全マスに一斉に答えさせる方式。物体の数に関係なく計算量が一定になり、リアルタイム検出が現実になりました。</p>
+          <div class="tl-tags"><span>物体検出</span><span>第4章</span></div>
+        </div>
+      </a>
+
+      <div class="tl-era"><b>第三期　Transformer以後</b></div>
+
+      <a class="tl-item" href="#/ch3">
+        <div class="tl-no">2017</div>
+        <div class="tl-body">
+          <div class="tl-t">Transformer — 順番待ちをやめる</div>
+          <p class="tl-d">論文「Attention Is All You Need」。バトンの引き継ぎを捨て、全トークンが全トークンを直接参照する方式に切り替えました。並列処理が可能になり、規模を上げる扉が開きます。今日までのほぼ全てのモデルがこの構造です。</p>
+          <div class="tl-tags"><span>自己注意</span><span>第3章</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch2">
+        <div class="tl-no">2018-20</div>
+        <div class="tl-body">
+          <div class="tl-t">GPT系 — 事前学習とスケール則</div>
+          <p class="tl-d">ラベルなしのテキストをひたすら読ませ、次の単語を当てさせる。人手が要らないので数兆トークンという規模が成立しました。規模を上げるほど性能が伸びる関係が見つかり、投資が計算資源へ集中します。</p>
+          <div class="tl-tags"><span>事前学習</span><span>第2章</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch4">
+        <div class="tl-no">2020</div>
+        <div class="tl-body">
+          <div class="tl-t">Vision Transformer — 原理が収束する</div>
+          <p class="tl-d">画像を小さな正方形に切り、単語と同じトークンとして扱ったところ、CNNを上回りました。画像と言語が同じ構造で処理できるとわかり、マルチモーダルの土台ができます。</p>
+          <div class="tl-tags"><span>ViT</span><span>第4章</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch2">
+        <div class="tl-no">2022</div>
+        <div class="tl-body">
+          <div class="tl-t">RLHFと対話AIの普及</div>
+          <p class="tl-d">人間が複数の応答に順位を付け、その選好を学習した報酬モデルで調整する。知識を足す工程ではなく、<b>振る舞いを整える</b>段階です。これで「指示に従うAI」が一般に届きました。</p>
+          <div class="tl-tags"><span>RLHF</span><span>第2章</span></div>
+        </div>
+      </a>
+
+      <div class="tl-era"><b>第四期　外とつながる</b></div>
+
+      <a class="tl-item" href="#/ch7">
+        <div class="tl-no">2024</div>
+        <div class="tl-body">
+          <div class="tl-t">MCP — AIと外部システムの共通規格</div>
+          <p class="tl-d">2024年11月に公開。AIアプリとデータ源を個別に繋ぐとM×N通りの実装が要るところを、規格を1つ挟んでM+Nにしました。2025年12月に中立団体へ移管され、事実上の業界標準になっています。</p>
+          <div class="tl-tags"><span>エージェント</span><span>第7章</span></div>
+        </div>
+      </a>
+
+      <a class="tl-item" href="#/ch5">
+        <div class="tl-no">現在</div>
+        <div class="tl-body">
+          <div class="tl-t">エージェントとRAGの時代</div>
+          <p class="tl-d">モデル本体をいじるのではなく、外側の設計で精度と実用性を上げる方向が主流です。知識はRAGで渡し、操作はツールにやらせる。工場で使うなら、ここが実際の設計対象になります。</p>
+          <div class="tl-tags"><span>RAG</span><span>第5章</span></div>
+        </div>
+      </a>
+
+      <div class="tl-cap tl-cap-end"><span class="tl-end">今</span></div>
+    </div>
+    <p class="note">年代は発表年を基準にした目安です。普及した時期とはずれがあります。</p>
+  </section>
+
+  <section>
+    <h2>章の構成</h2>
+    <p class="lead">上から順に読むと、原理 → 応用 → 運用の順に積み上がります。</p>
+    <ol class="chapmap">
+      <li><a href="#/ch1"><b>AIは何をしているのか</b><span>次の単語を当てているだけ。トークン、ハルシネーション、temperature。</span></a></li>
+      <li><a href="#/ch2"><b>モデルはどう作られるか</b><span>学習の三段階、自己教師あり、パラメータ、埋め込み表、勾配。</span></a></li>
+      <li><a href="#/ch3"><b>Transformerという転換点</b><span>自己注意、並列処理、2乗の計算量、コンテキスト長とKVキャッシュ。</span></a></li>
+      <li><a href="#/ch4"><b>画像のAIと言語のAI</b><span>YOLO、NMS、教師あり学習との違い、ViT、苦い教訓。</span></a></li>
+      <li><a href="#/ch5"><b>知識をどう扱うか</b><span>RAGとファインチューニングの使い分け、不調の切り分け、ベクトル検索。</span></a></li>
+      <li><a href="#/ch6"><b>手元で動かす</b><span>量子化、容量と帯域、メモリ計算、ローカルを選ぶ理由。</span></a></li>
+      <li><a href="#/ch7"><b>繋ぐ</b><span>エージェント、MCP、オンデバイス推論、データ基盤への示唆。</span></a></li>
+      <li><a href="#/ch8"><b>ゼロから育てる</b><span>nanoGPTを回す。lossが4.29から始まる理由。丸暗記と知識の境目。</span></a></li>
+      <li class="epi"><a href="#/apx"><b>付録</b><span>用語早見表、計算式まとめ、理解度チェック30問。</span></a></li>
+    </ol>
+  </section>
+</div>
+
+<!-- ======================= CH1 ======================= -->
+<div class="page" id="pg-ch1" hidden>
+  <div class="chap"><div class="chapno">第1章</div><h2 class="chapt">AIは何をしているのか</h2><p>ここを押さえると、他の論点がほぼ全部つながります。逆にここが曖昧だと、以降は理由のない暗記になります。</p></div>
+
+  <section>
+    <h2>やっているのは、次の1語の確率計算</h2>
+    <p class="lead">LLMの出力は、文章ではありません。「次に来るトークンの確率分布」です。</p>
+    <p>「圧縮空気の露点が」まで読んだとき、モデルは語彙すべてに対して確率を割り振ります。</p>
+    <div class="bars" id="distDemo"></div>
+    <p>そこから1つ選び、選んだものを入力の末尾に足して、また次を計算する。これを繰り返しているだけです。文章を組み立てているのではなく、1語ずつ積んでいます。</p>
+    <div class="crux"><span class="lbl">要点</span><b class="t">事実を検証する仕組みは、どこにも入っていない</b><p>モデルが見ているのは「もっともらしさ」だけです。内部に知識データベースがあって照会しているわけではありません。</p></div>
+  </section>
+
+  <section>
+    <h2>トークン — 処理の最小単位</h2>
+    <p>文章はまず<b>トークン</b>という断片に分割されます。単語まるごとのこともあれば、語尾だけ、漢字1文字のこともあります。語彙は10万種類程度で、どんな文章もこの組み合わせで表現されます。</p>
+    <p>よく出てくる断片ほど1トークンを与えられるので、英語の一般的な単語は1トークン、日本語や専門用語は分割されやすくなります。APIの料金で「日本語は割高」と言われるのはこのためです。</p>
+    <div class="card">
+      <label for="tokIn" style="font-size:14px;color:var(--muted)">文章を入れると、おおよそのトークン数を見積もります</label>
+      <input type="text" id="tokIn" value="圧縮空気の露点が上昇したため、ドライヤーを点検した。" style="margin-top:8px">
+      <dl class="read">
+        <div><dt>文字数</dt><dd id="tkChars">—</dd></div>
+        <div><dt>推定トークン数</dt><dd id="tkTok">—</dd></div>
+      </dl>
+      <p class="note">簡易な目安です。実際の分割はモデルごとの辞書で決まります。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>ハルシネーションが消えない理由</h2>
+    <p>存在しない論文名やAPI関数を、自然な文体で生成してしまう現象です。原因は構造にあります。<b>確率でもっともらしい語を選んでいるだけで、正しさを判定する工程が存在しない。</b></p>
+    <p>だから「もっと賢いモデルにする」では根本的には消えません。消すには、外から正しい資料を渡して、それを根拠に答えさせる必要があります。これが第5章のRAGです。</p>
+  </section>
+
+  <section>
+    <h2>temperature — 選び方の思い切り</h2>
+    <p class="lead">確率分布から1語を選ぶとき、どれだけ思い切るかを決める設定です。分布そのものは変わりません。</p>
+    <div class="ctl">
+      <label for="tmp">temperature <output id="tmpV">1.00</output></label>
+      <input type="range" id="tmp" min="10" max="200" value="100">
+    </div>
+    <div class="bars" id="tmpDemo"></div>
+    <p>低くすると最有力の語に偏り、安定する代わりに単調になります。高くすると低確率の語も選ばれ、多様になる代わりに破綻しやすくなります。0にすると毎回まったく同じ出力になります。</p>
+    <table>
+      <tr><th>用途</th><th>目安</th></tr>
+      <tr><td>データ抽出・分類・要約</td><td>0.1 〜 0.3</td></tr>
+      <tr><td>一般的な対話</td><td>0.7 前後</td></tr>
+      <tr><td>発想を広げる・創作</td><td>1.0 〜 1.3</td></tr>
+    </table>
+    <div class="crux"><span class="lbl">注意</span><b class="t">temperatureを上げてもモデルは賢くならない</b><p>サイコロの出目を選ぶルールを変えているだけで、サイコロ自体は同じです。</p></div>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/home">← 目次へ</a><a href="#/ch2">第2章　モデルはどう作られるか →</a></nav>
+</div>
+
+<!-- ======================= CH2 ======================= -->
+<div class="page" id="pg-ch2" hidden>
+  <div class="chap"><div class="chapno">第2章</div><h2 class="chapt">モデルはどう作られるか</h2><p>知識がどこから来るのかが分かる章です。実務の判断で最も多く使う知識は、ここに集まっています。</p></div>
+
+  <section>
+    <h2>学習の三段階</h2>
+    <ol class="stages">
+      <li><div class="sw">第1段階</div><h3>事前学習 — 全体の9割</h3><p>インターネット規模のテキストで「次の単語を当てる」練習をひたすら繰り返します。言語能力と世界知識のほとんどはここで決まり、費用も数十億円規模でここに集中します。数兆トークンを読みます。</p></li>
+      <li><div class="sw">第2段階</div><h3>指示調整 — 型を教える</h3><p>「質問されたら答える」という振る舞いを教える段階。人が作った指示と応答のペアを使うので、こちらは教師あり学習です。データ量は数万〜数十万件。</p></li>
+      <li><div class="sw">第3段階</div><h3>RLHF — 好まれ方を整える</h3><p>複数の応答に人間が順位を付け、その選好を学習した報酬モデルを使ってさらに調整します。</p></li>
+    </ol>
+    <div class="crux"><span class="lbl">最重要</span><b class="t">後半2段階は振る舞いの調整であって、知識を増やす工程ではない</b><p>事前学習が数兆トークン、指示調整が数万件。5〜6桁の開きがあります。この量で世界知識を足せるはずがありません。「モデルが自社設備を知らないからファインチューニングしよう」という発想は、ここで筋が悪いと判断できます。</p></div>
+  </section>
+
+  <section>
+    <h2>自己教師あり学習 — 正解は文章の中にある</h2>
+    <p class="lead">特殊なアルゴリズムではありません。計算の中身は教師あり学習とまったく同じで、違うのは正解の調達方法だけです。</p>
+    <p>「圧縮空気の露点が上昇した」という文で、「露点が」までを入力にして次の「上昇」を隠す。<b>隠した部分そのものが正解</b>なので、人が何かを書き足す必要がありません。1文字ずらすごとに1問できるので、1つの文章から何百問も自動生成されます。</p>
+    <p>人手が一切要らないため、ウェブ上のテキストをそのまま投入できます。これが数兆トークンという規模を可能にしました。</p>
+    <details class="why"><summary>なぜ「自己」教師ありと呼ぶのか</summary><div><p>データが自分自身の教師になっているからです。答え合わせの相手は、外部のデータベースでも他の文章でもなく、その文章自身の続きです。</p></div></details>
+  </section>
+
+  <section>
+    <h2>パラメータとは何か</h2>
+    <p class="lead">70Bの「B」はbillion（10億）。トークンではなく、モデルの中に入っている数値の個数です。</p>
+    <p>よくある誤解は「文章をベクトルにしたものがパラメータ」というものですが、逆です。<b>ベクトルに変換するルールの方がパラメータ</b>で、変換された結果は毎回変わる一時データです。</p>
+    <table>
+      <tr><th>名前</th><th>正体</th><th>入力で変わるか</th></tr>
+      <tr><td>トークン</td><td>文章を区切った断片（文字列）</td><td>変わる</td></tr>
+      <tr><td>ベクトル</td><td>表を引いて得た数値の並び</td><td>変わる</td></tr>
+      <tr><td><b>パラメータ</b></td><td>その表と、層の中の行列</td><td><b>固定</b></td></tr>
+    </table>
+    <div class="say">設備で言えば、パラメータは設備の設定値、トークンは流れてくる原料、ベクトルは通過後の中間製品です。原料を変えても設備の設定は変わりません。</div>
+    <p>パラメータが固定だからこそ、70B × 0.5バイト ＝ 35GB という容量計算が成り立ちます。どんなに長い文章を入れても、この35GBは変わりません。</p>
+  </section>
+
+  <section>
+    <h2>埋め込み表 — 言葉を数値にする</h2>
+    <p>表の形はこうです。</p>
+    <table>
+      <tr><th>方向</th><th>意味</th><th>決まり方</th></tr>
+      <tr><td>行数（約10万）</td><td>語彙の種類数</td><td>辞書を作った時点で決定</td></tr>
+      <tr><td>列数（約4000）</td><td>1語を表す数値の個数</td><td>設計時に人が決める</td></tr>
+    </table>
+    <p>1行が1トークンに対応します。「露」が8832番なら、8832行目の4000個の数値を丸ごと読み出す。これが最初のベクトルです。<b>ここは行列計算ではなく、ただの表引き</b>です。計算が始まるのはこの後、Transformer層に入ってからです。</p>
+    <details class="why"><summary>各列が何を意味するかは、人間には分からない</summary><div>
+      <p>「1列目は機械らしさ、2列目は硬さ」といった対応表は存在しません。学習の過程で勝手に決まったので、作った本人にも読めません。</p>
+      <p>ただし意味が無いわけではなく、固定されています。入力ごとに変わることもありません。後から実験で探り当てる研究分野があり、<b>機械論的解釈可能性</b>と呼ばれます。</p>
+      <p>しかも1列に1概念が綺麗に入っていることは稀で、意味のある方向は複数の列にまたがった斜めの向きとして現れます。</p>
+    </div></details>
+    <a class="lab" href="https://claude.ai/artifact/FQijbQid8GWiYX1d6JKmVc" target="_blank" rel="noopener">
+      <span class="k">体験</span><b>言葉が勝手に並びかわるのを見る</b>
+      <span>10個の言葉に数値を2個だけ持たせ、最初はでたらめな値から始めます。次に来る言葉を当てる練習を繰り返すと、誰も指示していないのに圧縮・ポンプ・バルブが1箇所に集まり、猫・犬・鳥が反対側へ離れていきます。</span>
+    </a>
+  </section>
+
+  <section>
+    <h2>勾配 — どちらにどれだけ動かすか</h2>
+    <p class="lead">700億個のパラメータを、1つずつ試して調整することはできません。微分を使って一度に求めます。</p>
+    <p>予測と正解のズレ（損失）を計算した後、各パラメータについて「上げれば誤差が減るか、下げれば減るか、効き目はどれくらいか」を一括で求める。この結果が勾配です。</p>
+    <div class="say">温水タンクの温度を目標に近づけたいとき、バルブAは1回開けると5℃上がる、バルブBは0.2℃下がる、バルブCはほぼ効かない。この「どちらにどれだけ効くか」の一覧が勾配にあたります。それを700億個のバルブに対して行います。</div>
+    <div class="crux"><span class="lbl">実務直結</span><b class="t">勾配はパラメータと同じ個数だけ発生する</b><p>さらに更新を安定させる最適化器の状態も同数以上持ちます。結果として学習時は推論の3〜4倍のメモリが必要です。70Bを4bitで推論するのに35GBでも、全パラメータの微調整には100GB以上かかります。LoRAが使われるのは、動かす対象を1%以下に絞ることで、持つべき勾配も1%になるからです。</p></div>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch1">← 第1章</a><a href="#/ch3">第3章　Transformerという転換点 →</a></nav>
+</div>
+
+<!-- ======================= CH3 ======================= -->
+<div class="page" id="pg-ch3" hidden>
+  <div class="chap"><div class="chapno">第3章</div><h2 class="chapt">Transformerという転換点</h2><p>2017年以降のほぼ全てのモデルがこの構造です。言語だけでなく画像も音声もタンパク質も、同じものに置き換わりました。</p></div>
+
+  <section>
+    <h2>何が並列になったのか</h2>
+    <p class="lead">RNNは単語を1つずつ順番に処理し、前の結果をバトンのように次へ渡していました。引き継ぎがあるので、並べられません。</p>
+    <p>自己注意は引き継ぎをやめました。代わりに<b>全トークンが全トークンを直接見に行く</b>方式にしました。「それ」というトークンが文脈を知りたければ、前から順にバトンを受け取るのではなく、文中の全語を一度に見渡して「更新」に高い重みを置く。この参照が語ごとに独立しているので、全部同時に計算できます。</p>
+    <p>そして全語対全語の参照は<b>行列の掛け算</b>になります。これはGPUが最も得意とする計算です。言語処理をGPU向きの形に翻訳した、というのが実態です。</p>
+    <div class="crux"><span class="lbl">因果の順序</span><b class="t">自己注意が可能にしたのは規模であって、意味の理解ではない</b><p>並列処理できる → 大規模化できる → 大量データで学習できる → 文脈依存の意味表現が獲得される。「Transformerは意味を理解する仕組み」という言い方は不正確で、「意味表現の獲得を可能にした構造」が実態に近いです。</p></div>
+    <a class="lab" href="https://claude.ai/artifact/XzcjPYgNM3iRfMfVXtUHyz" target="_blank" rel="noopener">
+      <span class="k">体験</span><b>注意が届く範囲</b>
+      <span>同じ問題を2つのモデルに解かせます。直前3語しか見えないモデルは25%（4択のまぐれ）で頭打ちになり、文全体を見渡せるモデルは100%近くまで上がります。学習が進むにつれ、注意が文頭へ集中していく様子が見えます。</span>
+    </a>
+  </section>
+
+  <section>
+    <h2>代償 — 計算量が2乗で増える</h2>
+    <p class="lead">順番待ちをなくすために、総当たりを選びました。その分の負担が残ります。</p>
+    <p>全トークンが全トークンを参照するので、10語なら10×10で100通り、20語なら400通り。長さを2倍にすると計算は4倍です。</p>
+    <div class="ctl">
+      <label for="ctxLen">コンテキスト長（トークン） <output id="ctxV">1,000</output></label>
+      <input type="range" id="ctxLen" min="1" max="200" value="10">
+    </div>
+    <dl class="read">
+      <div><dt>1,000トークンを1としたときの自己注意の計算量</dt><dd id="ctxCost">—</dd></div>
+    </dl>
+    <p class="note">実際にはFlashAttentionやスパース注意などの工夫で緩和されています。これは素朴な実装での関係です。</p>
+  </section>
+
+  <section>
+    <h2>コンテキスト長とKVキャッシュ</h2>
+    <p>コンテキスト長とは、モデルが一度に見ている文章の総量です。プロンプトだけではありません。</p>
+    <ul>
+      <li>システムプロンプト（開発者が設定した指示）</li>
+      <li><b>これまでの会話の全履歴</b>（自分の発言とAIの返答の両方）</li>
+      <li>今回の入力</li>
+      <li>RAGで検索してきた資料</li>
+    </ul>
+    <p>LLMに記憶はありません。毎回、会話の最初から全部を読み直しています。だから会話が進むほどコンテキストは長くなり続けます。</p>
+    <p><b>KVキャッシュ</b>は、既に読んだトークンの計算結果を保存して再利用する仕組みです。毎回ゼロから計算し直す無駄を防ぎますが、その分メモリを食い、会話が長くなるほど積み上がります。</p>
+    <table>
+      <tr><th>コンテキストを伸ばすと</th><th>どうなるか</th></tr>
+      <tr><td>重みの容量（モデルサイズ）</td><td>変わらない</td></tr>
+      <tr><td>KVキャッシュ</td><td>増える（ほぼ比例）</td></tr>
+      <tr><td>計算量</td><td>2乗で増える</td></tr>
+    </table>
+    <p>上限を超えると古い部分が切り捨てられます。長い会話の序盤を「忘れた」ように見えるのは、実際に読めなくなっているからです。</p>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch2">← 第2章</a><a href="#/ch4">第4章　画像のAIと言語のAI →</a></nav>
+</div>
+
+<!-- ======================= CH4 ======================= -->
+<div class="page" id="pg-ch4" hidden>
+  <div class="chap"><div class="chapno">第4章</div><h2 class="chapt">画像のAIと言語のAI</h2><p>かつては完全に別物でした。それが2020年に同じ構造へ収束します。その経緯に、AI全体を貫く教訓が出ています。</p></div>
+
+  <section>
+    <h2>YOLO — 探すのをやめる</h2>
+    <p class="lead">一言でいえば、画像を一度だけ計算して「どこに」「何が」あるかを同時に出すシステムです。</p>
+    <p>従来手法（R-CNN系）は、物体がありそうな候補を数百個切り出し、1つずつ分類していました。終わりが物体の数に依存するので、時間が読めません。</p>
+    <p>YOLOは画像を格子に区切り、全マスに一斉に「自分の担当範囲に物体の中心があるか、あるならその範囲と種類は」と答えさせます。<b>探索をやめて、決まった数のマスが決まった数値を埋める問題に作り替えた。</b>これが速さの正体です。</p>
+    <div class="say">構内の点検にたとえると、従来は点検員が歩き回って怪しい箇所を2000枚撮り、事務所で1枚ずつ判定する方式。YOLOは構内を25区画に分け、全員が合図と同時に用紙を提出する方式です。</div>
+    <p>担当の決め方は「物体の<b>中心</b>がどのマスに入っているか」です。枠が9マスにまたがっていても、担当は中心の1マスだけ。このルールがあるから、学習時に「どのマスの出力と正解を突き合わせるか」が一意に決まります。</p>
+  </section>
+
+  <section>
+    <h2>NMS — 重なった枠を掃除する</h2>
+    <p>隣のマスも似た特徴を見ているので、1つの物体に枠が5個も10個も重なります。これは<b>正常な挙動</b>です。</p>
+    <p>そこで確信度の高い枠から順に残し、大きく重なる他を捨てます。これがNMS（Non-Maximum Suppression）。重なりの度合いはIoUで測り、閾値を超えたものを消します。</p>
+    <div class="crux"><span class="lbl">実務直結</span><b class="t">NMSはネットワークの外側の後処理。再学習なしで直せる</b><p>枠が重複して出る → IoU閾値を下げる。枠が出ない → 確信度の下限を下げる。検出結果がおかしいとき、モデルを疑う前にまずここを調整するのが定石です。</p></div>
+    <p>弱点も同じ理屈から来ます。1マスに複数の物体の中心が入ると片方しか担当できないため、<b>小さい物体が密集した場面に弱い</b>。対策は入力解像度を上げるか、画像を分割して推論することです。</p>
+  </section>
+
+  <section>
+    <h2>教師あり学習と自己教師あり学習</h2>
+    <p class="lead">YOLOとLLMの根本的な違いは、計算の中身ではなく、正解を誰が作るかです。</p>
+    <table>
+      <tr><th></th><th>YOLO</th><th>LLMの事前学習</th></tr>
+      <tr><td>正解の作り方</td><td>人が枠を描く</td><td>文章の一部を隠すだけ</td></tr>
+      <tr><td>規模の上限</td><td>人件費</td><td>GPUと電力</td></tr>
+      <tr><td>データ量</td><td>数千〜数十万枚</td><td>数兆トークン</td></tr>
+      <tr><td>汎用性</td><td>教えたクラスのみ</td><td>後から任意のタスクへ</td></tr>
+    </table>
+    <p>LLMは特定のタスクを指定せず、ただ次の単語を当てていただけです。その過程で文法も知識も推論の型も獲得してしまい、結果として翻訳でも要約でもコード生成でも使えるようになりました。これが汎用モデルという言葉の中身です。</p>
+    <details class="why"><summary>線引きは絶対ではない</summary><div><p>LLMも指示調整の段階では人が作ったペアを使うので教師ありです。逆に画像側でも自己教師あり学習が進んでおり、ラベルなしで土台を作ってから少量のアノテーションを足す構成が増えています。アノテーション地獄を避ける現実的な解です。</p></div></details>
+  </section>
+
+  <section>
+    <h2>Vision Transformer — 原理が収束した</h2>
+    <p>2020年、画像を16×16ピクセルに切り刻み、1枚1枚を単語と同じトークンとしてTransformerに流し込んだところ、CNNを上回りました。</p>
+    <p>YOLOのグリッド分割と似ていますが、決定的な違いがあります。</p>
+    <table>
+      <tr><th></th><th>YOLOのマス</th><th>ViTのパッチ</th></tr>
+      <tr><td>出力の出し方</td><td>各マスが独立に答える</td><td>自己注意で互いを参照</td></tr>
+      <tr><td>大域的な文脈</td><td>層を重ねて徐々に広げる</td><td>最初から全体を見る</td></tr>
+      <tr><td>要求する資源</td><td>少なめ</td><td>大量のデータと計算</td></tr>
+    </table>
+    <p>これで画像と文章が同じ土俵に乗り、マルチモーダルが成立しました。写真を渡すと説明が返る機能は、両方が同じ形式のトークン列になったから可能になっています。</p>
+    <p class="note">ただし現場では棲み分けが残ります。CNN系は「近くのピクセルが関係する」という前提を構造に組み込んでいる分、少ないデータで学習でき、軽く動きます。エッジデバイスで秒間何フレームも処理するなら、今もCNN系が現実解です。</p>
+  </section>
+
+  <section>
+    <h2>苦い教訓（The Bitter Lesson）</h2>
+    <p class="lead">構造に領域知識を埋め込むより、構造を最小限にして規模を上げた方が勝つ。この経験則の名前です。</p>
+    <p>畳み込みが画像で強いのは、画像の性質（近くのピクセルが関係する、同じものはどこに写っていても同じ）を構造に組み込んでいるからだと長く考えられていました。物理的に正しい前提です。Transformerにはそれが一切入っていません。</p>
+    <p>ところが規模を上げると逆転しました。前提を組み込んでいない方が、<b>データから前提そのものを学んでしまった。</b>しかも人間が設計したものより柔軟なものを獲得しました。</p>
+    <p>言語でも同じです。文法規則や構文解析器を人手で組み込む努力が長く続きましたが、全部捨てて「次の単語を当てろ」とだけ言った方が上手くいきました。名前に苦味があるのは、負けた側の実感が込められているからです。</p>
+    <div class="crux"><span class="lbl">ただし</span><b class="t">物量が効くのは、物量を投じられる場合だけ</b><p>Raspberry PiでYOLOを動かすなら、今もCNNが正解です。制約下では設計の巧みさが依然として効きます。工場の制御系で使うモデルを選ぶ場面では、こちら側の判断になります。</p></div>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch3">← 第3章</a><a href="#/ch5">第5章　知識をどう扱うか →</a></nav>
+</div>
+
+<!-- ======================= CH5 ======================= -->
+<div class="page" id="pg-ch5" hidden>
+  <div class="chap"><div class="chapno">第5章</div><h2 class="chapt">知識をどう扱うか</h2><p>実務で最も頻繁に使う判断軸です。社内でAI導入を検討するとき、ここだけ分かっていれば方向を誤りません。</p></div>
+
+  <section>
+    <h2>知識が入るのは事前学習だけ</h2>
+    <p class="lead">第2章の結論をもう一度置きます。これが以降すべての前提です。</p>
+    <p>事前学習は数兆トークン、数十億円の工程です。個人にも一企業にも手が出ません。そして知識が入るのはここだけ。指示調整もRLHFも振る舞いを整える段階なので、<b>後から知識を足すことはできません。</b></p>
+    <div class="crux"><span class="lbl">判断軸</span><b class="t">変えたいのは中身か、見た目か</b><p>中身（事実・知識・数字）を変えたい → <b>RAG</b><br>見た目（書式・口調・構成）を変えたい → <b>ファインチューニング</b></p></div>
+  </section>
+
+  <section>
+    <h2>RAGとファインチューニングの違い</h2>
+    <p>種類がまったく違います。片方はプログラムの作り方、もう片方はモデルの作り直しです。</p>
+    <table>
+      <tr><th></th><th>RAG</th><th>ファインチューニング</th></tr>
+      <tr><td>触るもの</td><td>モデルの外側</td><td>モデルの中身（重み）</td></tr>
+      <tr><td>作るもの</td><td>検索と連携のコード</td><td>学習データと新しいモデル</td></tr>
+      <tr><td>更新</td><td>索引を差し替えるだけ</td><td>再学習が必要</td></tr>
+      <tr><td>出典の提示</td><td>できる</td><td>できない</td></tr>
+      <tr><td>必要な機材</td><td>ほぼ不要</td><td>推論の3〜4倍のメモリ</td></tr>
+      <tr><td>近い作業</td><td>システム構築</td><td>機械学習</td></tr>
+    </table>
+    <div class="say">人に例えると、ファインチューニングは新人を研修に送り直すこと。RAGは手元にマニュアルの索引を用意して、該当ページを見ながら答えさせること。改訂があったとき、前者は再研修、後者はページの差し替えで済みます。</div>
+    <p>こう聞かれたらRAG確定、という目印が2つあります。<b>「頻繁に更新される」</b>と<b>「どこに書いてあったか示したい」</b>。どちらかが出てきたら迷う必要はありません。</p>
+    <details class="why"><summary>その前に試すべきこと</summary><div><p>文体を揃えるだけなら、まずプロンプトに見本を3本ほど貼る方法（few-shot）で足りることが多いです。ファインチューニングは数百〜数千のペアを用意して学習を回す必要があり、見本を貼るだけで済む場面では割に合いません。判断の順序は、プロンプト → 足りなければファインチューニングです。</p></div></details>
+  </section>
+
+  <section>
+    <h2>RAGの不調は、ほぼ検索側</h2>
+    <p class="lead">資料に書いてあるはずの内容を「資料にない」と答える。よくある場面です。</p>
+    <p>重要なのは、<b>この時点で生成側は正常に動いている</b>ということ。渡された資料を正直に探して、見つからなかったと報告しています。壊れているならでたらめをでっち上げます。</p>
+    <p>つまり問題は渡す前の段階です。見るべきは3つ。</p>
+    <ul>
+      <li><b>分割の仕方</b> — 答えが2つのかたまりにまたがって切れている。表が途中で切れる、見出しと本文が分かれるのもよくあります</li>
+      <li><b>拾う件数</b> — 3件に絞っていて、答えが4番目にあった。10件に増やして試すのが手早い確認です</li>
+      <li><b>索引の中身</b> — その文書が取り込まれていない。スキャンしたPDFは画像なのでテキストが1文字も抽出できないことがあります</li>
+    </ul>
+    <div class="crux"><span class="lbl">切り分け</span><b class="t">検索だけを単独で実行して、何が拾われたか見る</b><p>該当箇所が出てくるなら生成側、出てこないなら検索側。一発で分かります。モデルを大きくして解決しようとするのが、一番よくある遠回りです。</p></div>
+  </section>
+
+  <section>
+    <h2>ベクトル検索 — 文字が一致しなくても探せる</h2>
+    <p>通常のSQLは完全一致か範囲で探します。ところが「圧縮機の調子が悪い」で検索したいのに、文書には「コンプレッサーの異常」と書いてある。一文字も一致しません。</p>
+    <p>そこで文章をベクトルに変換して保存し、質問文も同じ方法でベクトル化して<b>座標が近いものを探します</b>。第2章の埋め込みを、語単位から文章単位に拡張したものです。</p>
+    <p>近さの測り方にはコサイン類似度がよく使われます。距離ではなく<b>方向が揃っているか</b>を見るので、文章の長さが違っても、言っていることが同じなら近いと判定されます。</p>
+    <table>
+      <tr><th>種類</th><th>例</th><th>向いている場面</th></tr>
+      <tr><td>軽量・組み込み</td><td>Chroma、LanceDB</td><td>練習、小規模、ローカル</td></tr>
+      <tr><td>SQLの拡張</td><td>PostgreSQL + pgvector</td><td>既存DBがあるなら最有力</td></tr>
+      <tr><td>専用サービス</td><td>Pinecone、Qdrant</td><td>大規模、クラウド</td></tr>
+    </table>
+    <p>pgvectorが実務で有力なのは、こう書けるからです。</p>
+<pre><code>SELECT 本文 FROM documents
+WHERE 工場 = '静岡' AND 年度 &gt;= 2024      -- 普通の絞り込み
+ORDER BY embedding &lt;-&gt; '[質問のベクトル]'  -- 意味の近さで並べ替え
+LIMIT 5</code></pre>
+    <p><b>権限や年度で絞ってから意味で探す</b>という、実務で必須の組み合わせが1つのクエリで書けます。</p>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch4">← 第4章</a><a href="#/ch6">第6章　手元で動かす →</a></nav>
+</div>
+
+<!-- ======================= CH6 ======================= -->
+<div class="page" id="pg-ch6" hidden>
+  <div class="chap"><div class="chapno">第6章</div><h2 class="chapt">手元で動かす</h2><p>機材選定が自分でできるようになる章です。計算は掛け算と割り算だけで、暗記するものはほとんどありません。</p></div>
+
+  <section>
+    <h2>量子化 — 16段階に丸める</h2>
+    <p class="lead">文章とは無関係です。モデルの中に固定で入っている数値の、記録の細かさを落とす作業です。</p>
+    <p>4bitとは、桁数ではなく<b>区別できる値の個数</b>のことです。4ビットで表せるのは2⁴＝16通り。すべての重みを16段階のどれかに丸めます。</p>
+    <div class="say">圧力計の目盛りの細かさに相当します。16ビットなら目盛りが65536本、4ビットなら16本。同じ圧力を測っていますが、記録が粗い分だけ用紙が薄くて済みます。</div>
+    <table>
+      <tr><th>表記</th><th class="n">1個あたり</th><th class="n">バイト換算</th></tr>
+      <tr><td>FP32</td><td class="n">32ビット</td><td class="n">4バイト</td></tr>
+      <tr><td>FP16</td><td class="n">16ビット</td><td class="n">2バイト</td></tr>
+      <tr><td>INT8</td><td class="n">8ビット</td><td class="n">1バイト</td></tr>
+      <tr><td>INT4</td><td class="n">4ビット</td><td class="n">0.5バイト</td></tr>
+    </table>
+    <p class="note">1バイト＝8ビットなので、ビット数を8で割るとバイトになります。</p>
+    <div class="crux"><span class="lbl">混同しやすい</span><b class="t">量子化で落ちるのは品質だけ。速度と容量は良くなる</b><p>ビット数を下げる → メモリ使用量は減る、生成速度は上がる、品質はわずかに下がる。「量子化＝性能が落ちる」とまとめて覚えていると判断を誤ります。<br>劣化は直線的ではなく、おおよそ4bitまでは緩やかで、3bit以下で急激に崩れます。だから4bitが実用の定番です。</p></div>
+  </section>
+
+  <section>
+    <h2>容量が「動くか」、帯域が「速さ」を決める</h2>
+    <p class="lead">同じ「メモリ」でも、聞いているものが2つあります。</p>
+    <table>
+      <tr><th>見るもの</th><th>単位</th><th>決まること</th></tr>
+      <tr><td>メモリ容量</td><td>GB</td><td><b>動くか動かないか</b></td></tr>
+      <tr><td>メモリ帯域</td><td>GB/s</td><td><b>速いか遅いか</b></td></tr>
+    </table>
+    <p>普通のPCを買うときはほぼ容量しか見ません。帯域が主役になるのはLLMだけです。理由は、<b>1トークン出すたびに重み全部を読み直すから</b>。10語出せば35GBを10回読みます。</p>
+    <div class="say">タンクの容量とポンプの吐出量の関係です。タンクが小さければ中身が入らない。入っても、ポンプが非力なら送り出しに時間がかかる。</div>
+  </section>
+
+  <section>
+    <h2>計算してみる</h2>
+    <p class="lead">2つの掛け算・割り算だけで、買う前に実用速度まで判断できます。</p>
+    <div class="card">
+      <div class="ctl">
+        <label for="prm">パラメータ数 <output id="prmV">70B</output></label>
+        <input type="range" id="prm" min="1" max="140" value="70">
+      </div>
+      <div class="row" style="align-items:center">
+        <label for="bits" style="font-size:14px;color:var(--muted)">精度</label>
+        <select id="bits">
+          <option value="0.5" selected>INT4（4ビット）</option>
+          <option value="1">INT8（8ビット）</option>
+          <option value="2">FP16（16ビット）</option>
+        </select>
+        <label for="bw" style="font-size:14px;color:var(--muted);margin-left:8px">帯域</label>
+        <select id="bw">
+          <option value="460">460 GB/s</option>
+          <option value="614" selected>614 GB/s</option>
+          <option value="1200">1200 GB/s</option>
+        </select>
+      </div>
+      <dl class="read">
+        <div><dt>モデルの容量</dt><dd id="rSize">—</dd></div>
+        <div><dt>実務で見るべきメモリ（OS・KVキャッシュ込み）</dt><dd id="rNeed">—</dd></div>
+        <div><dt>理論上の生成速度</dt><dd id="rTheo">—</dd></div>
+        <div><dt>実効の目安（6〜7割）</dt><dd id="rReal">—</dd></div>
+      </dl>
+      <p class="note">モデル容量 ＝ パラメータ数 × 1個あたりのバイト数。生成速度 ＝ 帯域 ÷ モデル容量。</p>
+    </div>
+    <p>メモリは<b>モデルサイズの2倍弱</b>を見ておくと大きく外しません。モデル本体に加えて、macOSと常駐アプリで8〜12GB、推論中のKVキャッシュが数GB〜十数GB乗るためです。</p>
+    <table>
+      <tr><th>メモリ</th><th>快適に動く規模（4bit）</th></tr>
+      <tr><td>36GB</td><td>30B級（15GB）</td></tr>
+      <tr><td>64GB</td><td>70B級（35GB）</td></tr>
+      <tr><td>128GB</td><td>120B級（60GB）</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>遅いときに効く手は1つだけ</h2>
+    <p>生成速度は「帯域 ÷ モデル容量」で決まります。帯域は買った時点で固定なので、<b>変えられるのは分母だけ</b>です。</p>
+    <ul>
+      <li><b>効く</b>：小さいモデルに替える（70B→30Bで2倍以上速くなる）</li>
+      <li><b>逆効果</b>：8bitに上げる（容量が倍になり速度は半分）</li>
+      <li><b>無関係</b>：外付けSSDを高速化する（読み込みは起動時の一度だけ）</li>
+    </ul>
+    <p>小さくすれば賢さは落ちます。速度と品質のトレードオフを、用途ごとにどこで切るかという判断になります。</p>
+  </section>
+
+  <section>
+    <h2>ローカルを選ぶ理由は2つしかない</h2>
+    <p class="lead">正直に言えば、品質も速度も手軽さもクラウドAPIが上です。</p>
+    <ol>
+      <li><b>機密データを外部に出せない</b> — 工場の点検記録や設備データを扱うなら、これが決定的な理由になります</li>
+      <li><b>大量処理でAPI料金が現実的でない</b> — 数万件の分類、プロンプトの試行錯誤を一晩回す、といった用途</li>
+    </ol>
+    <p>このどちらにも当てはまらないなら、APIを使うのが合理的です。機材を買う前に、どちらかに該当するかを先に確かめてください。</p>
+    <details class="why"><summary>アプリ開発者がよく誤解すること</summary><div>
+      <p>「手元にローカルLLMがあれば、自作アプリのAPI料金が不要になる」は成立しません。自宅サーバーにアプリから接続させても、<b>接続先が変わるだけで外部APIのまま</b>です。しかも回線と稼働の責任を背負います。</p>
+      <p>消えるのは<b>開発側</b>のコストだけ。ユーザー側のコストを消すには、モデルを端末内で動かす（オンデバイス推論）しかありません。第7章で扱います。</p>
+    </div></details>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch5">← 第5章</a><a href="#/ch7">第7章　繋ぐ →</a></nav>
+</div>
+
+<!-- ======================= CH7 ======================= -->
+<div class="page" id="pg-ch7" hidden>
+  <div class="chap"><div class="chapno">第7章</div><h2 class="chapt">繋ぐ</h2><p>単体のLLMではなく、外部システムと組み合わせて使う段階の話です。全工場規模の基盤を設計するなら、ここが実際の設計対象になります。</p></div>
+
+  <section>
+    <h2>エージェント — ツールを使わせる</h2>
+    <p>質問に答えるだけでなく、検索する、データベースを叩く、ファイルを読む、他システムを操作する。これを自律的に判断させる構成をエージェントと呼びます。いま業界が動いている中心です。</p>
+  </section>
+
+  <section>
+    <h2>MCP — M×N問題をM+Nにする</h2>
+    <p class="lead">AIアプリがM個、繋ぎたいシステムがN個あると、個別実装ではM×N通り必要になります。</p>
+    <p>AIアプリ3つ × システム3つ で9通り。それぞれ別々に作り、AI側を替えるたびに全部作り直すことになります。共通規格を1つ挟めば、各側が1つ対応するだけ。3+3で6通りに減り、数が増えるほど差が開きます。</p>
+    <div class="say">USBがやったことと同じです。機器ごとに専用ケーブルを作っていた時代から、規格を1つ決めて全部それに合わせる時代へ。</div>
+    <h3>構造は3階層</h3>
+    <ul>
+      <li><b>ホスト</b> — AIを動かすアプリ本体</li>
+      <li><b>クライアント</b> — ホストの中でサーバー1つと1対1で繋がる部分</li>
+      <li><b>サーバー</b> — 外部システム側に置かれ、機能を公開する</li>
+    </ul>
+    <p>作る側に回るなら、書くのは<b>サーバー</b>です。公開できるものの主役は<b>ツール</b>（AIが自分の判断で呼び出す操作）。ほかにAIが読み取るリソース、利用者が選ぶ定型指示があります。</p>
+    <h3>自分で作れる</h3>
+    <p>Pythonなら、普通の関数にデコレータを1つ付けるだけです。</p>
+<pre><code>from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("設備データ")
+
+@mcp.tool()
+def get_pressure(equipment: str) -&gt; str:
+    """指定した設備の現在圧力を返す"""
+    return f"{equipment}の圧力: 0.62 MPa"
+
+mcp.run()</code></pre>
+    <p>AIに伝わるのは関数名・引数・型、そして<b>説明文</b>です。AIはこれを読んで呼ぶかどうかを判断するので、説明文がインターフェース仕様書そのものになります。中身は普通のPythonで、SQLを投げても既存APIを叩いても構いません。</p>
+    <div class="crux"><span class="lbl">設計の鉄則</span><b class="t">最初は読み取り専用にする</b><p>読み取りだけなら事故は起きません。設定を書き換えられる関数を公開した瞬間、責任の所在が問題になります。権限設計とプロンプトインジェクション対策も、本番導入では避けて通れません。</p></div>
+    <p class="note">汎用的なサーバー（ファイル、Git、各種クラウドサービス）は既に多数公開されています。自作する価値があるのは社内固有のシステムだけです。</p>
+  </section>
+
+  <section>
+    <h2>オンデバイス推論 — 端末の中で動かす</h2>
+    <p class="lead">通信ゼロ・料金ゼロを実現する唯一の方法です。</p>
+    <table>
+      <tr><th>誰のコストか</th><th>消す手段</th></tr>
+      <tr><td>開発者（試行錯誤、前処理）</td><td>手元のローカルLLM</td></tr>
+      <tr><td>アプリのユーザー</td><td>端末内実行か、クラウドAPI</td></tr>
+    </table>
+    <p>iOSなら、Appleが提供するフレームワーク（Vision、Speech、Natural Language）を呼ぶか、自前のモデルをCore MLに変換してアプリに同梱します。</p>
+    <p>判断の目安は明快です。<b>パターン認識ならオンデバイスで完結</b>します。画像、音声、ジェスチャー、簡単な分類。一方、長文生成や複雑な推論には端末内の小型モデルでは品質が足りず、APIが必要になります。現実的な設計は、軽い処理は端末内、重い処理だけAPIという併用です。</p>
+    <div class="say">大は小を兼ねません。手書き文字の判定にLLMは要らず、数MBの画像分類モデルで十分です。やりたいことが分類や検出なら小さい専用モデル、文章の生成や理解が必要なときだけLLM。</div>
+  </section>
+
+  <section>
+    <h2>工場のデータ基盤にどう効くか</h2>
+    <p>SCADAにも生産管理システムにもダッシュボードにも繋ぐことになります。ここを個別実装で繋ぐと、AI側を替えるたびに全部作り直しです。</p>
+    <p>MCPで統一しておけば、<b>AI側を入れ替えても下は無傷</b>。設備の通信を独自プロトコルにせず標準規格に揃えておく判断と、動機が完全に同じです。</p>
+    <p>仕様面でも企業導入を意識した整備が進んでおり、セッションに依存しないステートレス設計への移行で、通常のロードバランサーの背後に複数インスタンスを置けるようになりました。認証もOAuth 2.0やOpenID Connectを使った構成が想定されています。全工場規模で展開するなら、この違いは設計上かなり大きいところです。</p>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch6">← 第6章</a><a href="#/ch8">第8章　ゼロから育てる →</a></nav>
+</div>
+
+<!-- ======================= CH8 ======================= -->
+<div class="page" id="pg-ch8" hidden>
+  <div class="chap"><div class="chapno">第8章</div><h2 class="chapt">ゼロから育てる</h2><p>読んで分からなかったことが、動かすと分かることがあります。ここは実際に手を動かす章です。</p></div>
+
+  <section>
+    <h2>nanoGPTを回す</h2>
+    <p class="lead">Google Colabの無料枠で動きます。環境構築は不要で、ブラウザだけで始められます。</p>
+    <p>まず「ランタイム → ランタイムのタイプを変更」でGPU（T4）を選んでから、順に実行します。</p>
+<pre><code>!git clone https://github.com/karpathy/nanoGPT
+%cd nanoGPT
+!pip install -q tiktoken</code></pre>
+<pre><code>!nvidia-smi</code></pre>
+<pre><code>!python data/shakespeare_char/prepare.py</code></pre>
+<pre><code>!python train.py config/train_shakespeare_char.py --compile=False</code></pre>
+    <table>
+      <tr><th>記号</th><th>意味</th></tr>
+      <tr><td><code>!</code></td><td>Linuxのコマンドとして実行</td></tr>
+      <tr><td><code>%</code></td><td>Colab自体への命令（場所移動など）</td></tr>
+      <tr><td>なし</td><td>Pythonのコードとして実行</td></tr>
+    </table>
+    <p>料理で言えば、レシピを取り寄せ（clone）、器具を確認し（nvidia-smi）、材料を下処理して（prepare）、火にかける（train）という流れです。</p>
+  </section>
+
+  <section>
+    <h2>設定が、これまでの話と対応している</h2>
+    <table>
+      <tr><th>設定</th><th>意味</th></tr>
+      <tr><td><code>n_embd = 384</code></td><td>埋め込みの列数（次元数）。表は65行×384列</td></tr>
+      <tr><td><code>n_layer = 6</code></td><td>Transformerを6層積む（本物は80層前後）</td></tr>
+      <tr><td><code>n_head = 6</code></td><td>自己注意を6並列で走らせる</td></tr>
+      <tr><td><code>block_size = 256</code></td><td>コンテキスト長。直前256文字まで見える</td></tr>
+      <tr><td><code>learning_rate</code></td><td>勾配に沿ってどれだけ動かすか（歩幅）</td></tr>
+    </table>
+    <p>パラメータ数は約1065万。うち埋め込み表は 65行 × 384列 ＝ 24,960個で、全体の0.2%です。<b>残り99.8%は層の中</b>にあります。「埋め込み表は全体のごく一部」という話が、実測で確認できます。</p>
+  </section>
+
+  <section>
+    <h2>lossが4.29から始まる理由</h2>
+    <p class="lead">スタート地点の数字には意味があります。</p>
+    <p>65種類の文字から完全にランダムに選ぶと、正解を引く確率は1/65。その損失は ln(65) ＝ 4.17 です。実測の4.29はほぼこれと一致します。<b>「何も知らない状態」の数値が理論通りに出ている</b>ということです。</p>
+    <table>
+      <tr><th class="n">loss</th><th>状態</th></tr>
+      <tr><td class="n">4.2</td><td>完全にランダム</td></tr>
+      <tr><td class="n">2.5</td><td>文字の頻度を覚えた</td></tr>
+      <tr><td class="n">2.0</td><td>文字の並びを覚え始めた</td></tr>
+      <tr><td class="n">1.5</td><td>英単語らしくなる</td></tr>
+      <tr><td class="n">1.3</td><td>戯曲の形式まで再現</td></tr>
+    </table>
+    <p>学習中は <code>train loss</code> と <code>val loss</code> の両方が表示されます。val（検証用）は学習に一度も使わない抜き打ちテストで、<b>丸暗記していないかを検出</b>します。train だけ下がって val が上がり始めたら、暗記に入った合図です。</p>
+  </section>
+
+  <section>
+    <h2>丸暗記と知識の境目</h2>
+    <a class="lab" href="https://claude.ai/artifact/Kf8JXjF3RNjmUdgis2ZSyw" target="_blank" rel="noopener">
+      <span class="k">体験</span><b>ゼロからAIを育てる</b>
+      <span>26個の文章だけを学習する小さなモデルです。生まれた直後は文字の羅列しか書けませんが、学習を回すと粗いところから順に整い、最後には日本語の文を書くようになります。temperatureのスライダーも付いています。</span>
+    </a>
+    <p>ただしこの子は<b>丸暗記しています</b>。学習した文が26個しかないので、全部覚えれば損失はゼロに近づきます。</p>
+    <p>本物との違いはここです。数兆トークンは暗記できる量ではありません。<b>暗記が不可能な量を前にして、仕方なく言葉の規則性そのものを掴んだ。</b>その結果が、学習していない文章にも答えられる能力になりました。データ量が質を変えた、というのはこの意味です。</p>
+  </section>
+
+  <section>
+    <h2>次にやること</h2>
+    <ul>
+      <li><b>設定を変える</b> — <code>n_layer</code> を増やす、<code>block_size</code> を減らす。値を変えてlossがどう動くか見るだけで、各パラメータの意味が体で分かります</li>
+      <li><b>データを差し替える</b> — 青空文庫のテキストで日本語を学習させる。vocab sizeが数千になり、同じ設定でも挙動が変わります</li>
+      <li><b><code>model.py</code> を読む</b> — 300行程度。<code>CausalSelfAttention</code> クラスの20行が、第3章で説明した自己注意そのものです</li>
+    </ul>
+<pre><code>q, k, v = ...                               # Query・Key・Value を作る
+att = q @ k.transpose(-2,-1)                # 全トークン対全トークンの総当たり
+att = F.softmax(att, dim=-1)                # 参照の重みに変換</code></pre>
+    <p>この2行目が「計算量が系列長の2乗」の正体です。行列の掛け算1行が、その2乗にあたります。</p>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch7">← 第7章</a><a href="#/apx">付録　用語・計算式・理解度チェック →</a></nav>
+</div>
+
+<!-- ======================= 付録 ======================= -->
+<div class="page" id="pg-apx" hidden>
+  <div class="chap"><div class="chapno">付録</div><h2 class="chapt">用語・計算式・理解度チェック</h2><p>判断に迷ったときに開く早見表と、定着を確かめるテストです。</p></div>
+
+  <section>
+    <h2>計算式まとめ</h2>
+    <p class="lead">暗記すべきはこの4つだけです。</p>
+    <div class="card">
+      <p style="margin:0"><b>① モデルの容量</b></p>
+      <p class="big" style="font-size:22px;margin:4px 0 0">パラメータ数 × 1個あたりのバイト数</p>
+      <p class="note">70B × 0.5バイト（4bit）＝ 35GB　／　1バイト＝8ビット</p>
+    </div>
+    <div class="card">
+      <p style="margin:0"><b>② 生成速度</b></p>
+      <p class="big" style="font-size:22px;margin:4px 0 0">メモリ帯域 ÷ モデル容量</p>
+      <p class="note">614 ÷ 35 ≒ 17.5回/秒（理論）→ 実効6〜7割で秒10〜12トークン</p>
+    </div>
+    <div class="card">
+      <p style="margin:0"><b>③ 必要メモリの目安</b></p>
+      <p class="big" style="font-size:22px;margin:4px 0 0">モデル容量 × 2弱</p>
+      <p class="note">OSと常駐アプリで8〜12GB、KVキャッシュが数GB〜十数GB乗る</p>
+    </div>
+    <div class="card">
+      <p style="margin:0"><b>④ 自己注意の計算量</b></p>
+      <p class="big" style="font-size:22px;margin:4px 0 0">系列長の2乗に比例</p>
+      <p class="note">長さ2倍で計算4倍。ただし重みの容量は変わらない</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>判断の早見表</h2>
+    <table>
+      <tr><th>迷う場面</th><th>答え</th></tr>
+      <tr><td>社内の知識を参照させたい</td><td>RAG（知識は事前学習でしか入らない）</td></tr>
+      <tr><td>書式や口調を揃えたい</td><td>まずプロンプト、足りなければファインチューニング</td></tr>
+      <tr><td>頻繁に更新される／出典を示したい</td><td>RAG 確定</td></tr>
+      <tr><td>RAGの回答がおかしい</td><td>検索だけ単独実行して切り分け</td></tr>
+      <tr><td>生成が遅い</td><td>小さいモデルに替える（他は効かない）</td></tr>
+      <tr><td>検出枠が重複する</td><td>NMSのIoU閾値を下げる（再学習は不要）</td></tr>
+      <tr><td>アプリをオフラインで動かしたい</td><td>端末内実行（自宅サーバーは外部APIのまま）</td></tr>
+      <tr><td>微調整でメモリが足りない</td><td>LoRA（勾配と最適化器の状態が重い）</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>用語早見表</h2>
+    <table>
+      <tr><th>用語</th><th>一言でいうと</th></tr>
+      <tr><td>トークン</td><td>文章を区切った断片。処理の最小単位</td></tr>
+      <tr><td>パラメータ</td><td>モデル内の固定された数値。70B＝700億個</td></tr>
+      <tr><td>埋め込み表</td><td>トークンIDから数値の並びを引く表（約10万行×4000列）</td></tr>
+      <tr><td>勾配</td><td>各パラメータをどちらにどれだけ動かせば誤差が減るかの数値</td></tr>
+      <tr><td>損失（loss）</td><td>予測の外れ具合。正解にどれだけ確率を割り当てたか</td></tr>
+      <tr><td>自己注意</td><td>各トークンが他のどれをどれだけ参照するかの重み付け</td></tr>
+      <tr><td>コンテキスト長</td><td>一度に見ている文章の総量（会話履歴を含む）</td></tr>
+      <tr><td>KVキャッシュ</td><td>既読トークンの計算結果の保存。会話が長いほど増える</td></tr>
+      <tr><td>量子化</td><td>重み1個のビット数を下げて容量を減らすこと</td></tr>
+      <tr><td>メモリ帯域</td><td>毎秒どれだけ読み出せるか。生成速度を決める</td></tr>
+      <tr><td>RAG</td><td>検索した資料をプロンプトに添えて渡す仕組み</td></tr>
+      <tr><td>ファインチューニング</td><td>学習済みモデルの重みを追加で更新すること</td></tr>
+      <tr><td>LoRA</td><td>元の重みを凍結し、小さな差分だけ学習する手法</td></tr>
+      <tr><td>NMS</td><td>検出で重複した枠を1つに絞る後処理</td></tr>
+      <tr><td>MCP</td><td>AIと外部システムを繋ぐ共通規格</td></tr>
+      <tr><td>オンデバイス推論</td><td>端末内でモデルを動かすこと。通信も料金も不要</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>理解度チェック</h2>
+    <p class="lead">全30問。章を選んで解けます。暗記ではなく判断を問う形にしてあります。</p>
+    <div class="tabs" id="qtabs"></div>
+    <div class="qwrap">
+      <div class="qcard">
+        <div class="qmeta" id="qMeta">—</div>
+        <p class="qtext" id="qText">—</p>
+        <div class="opts" id="qOpts"></div>
+        <div class="expl" id="qExpl" hidden></div>
+        <div class="row"><button id="qNext" hidden>次の問題 →</button><button id="qReset">最初から</button></div>
+      </div>
+      <p class="note">正答 <span class="score" id="qScore">0 / 0</span></p>
+    </div>
+  </section>
+
+  <nav class="chapnav" aria-label="章の移動"><a href="#/ch8">← 第8章</a><a href="#/home">目次へ戻る →</a></nav>
+</div>
+
+</main>
+
+<footer>
+  工学系技術者のAI学習ノート — 自分用の学習記録です。内容は執筆時点の理解に基づく整理であり、数値は目安を含みます。
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- drawer & routing ---------- */
+const drawer=$('drawer'),scrim=$('scrim'),menuBtn=$('menuBtn');
+function openDrawer(){drawer.hidden=false;scrim.hidden=false;menuBtn.setAttribute('aria-expanded','true')}
+function closeDrawer(){drawer.hidden=true;scrim.hidden=true;menuBtn.setAttribute('aria-expanded','false')}
+closeDrawer();
+menuBtn.addEventListener('click',()=>drawer.hidden?openDrawer():closeDrawer());
+scrim.addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+const TITLES={home:'目次：AIの歴史',ch1:'第1章　AIは何をしているのか',ch2:'第2章　モデルはどう作られるか',ch3:'第3章　Transformerという転換点',ch4:'第4章　画像のAIと言語のAI',ch5:'第5章　知識をどう扱うか',ch6:'第6章　手元で動かす',ch7:'第7章　繋ぐ',ch8:'第8章　ゼロから育てる',apx:'付録'};
+let curPage='home';
+function showPage(pg,toTop){
+  if(!document.getElementById('pg-'+pg))pg='home';
+  document.querySelectorAll('.page').forEach(p=>p.hidden=(p.id!=='pg-'+pg));
+  curPage=pg;
+  $('pageTitle').textContent=pg==='home'?'工学系技術者のAI学習ノート':TITLES[pg];
+  drawer.querySelectorAll('a').forEach(a=>{
+    if(a.dataset.pg===pg)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  });
+  if(toTop)window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+}
+function route(){
+  const h=location.hash;
+  if(h.startsWith('#/'))showPage(h.slice(2),true);
+  else showPage('home',false);
+}
+window.addEventListener('hashchange',route);
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();closeDrawer();
+  const pg=a.dataset.pg;
+  if(location.hash==='#/'+pg)showPage(pg,true);else location.hash='#/'+pg;
+}));
+route();
+
+/* ---------- ch1: probability bars ---------- */
+const BASE=[['空気',0.52],['の',0.18],['配管',0.11],['圧力',0.08],['温度',0.05],['猫',0.004]];
+function bars(el,data,fmt){
+  const max=Math.max(...data.map(d=>d[1]));
+  el.innerHTML=data.map(([w,p])=>
+    '<div class="barrow"><span>'+w+'</span><i style="width:'+Math.max(1,p/max*100).toFixed(1)+'%"></i><em>'+fmt(p)+'</em></div>'
+  ).join('');
+}
+const pc=p=>(p*100).toFixed(p<0.01?2:1)+'%';
+if($('distDemo'))bars($('distDemo'),BASE,pc);
+
+const tmp=$('tmp');
+function drawTmp(){
+  const t=Math.max(0.1,tmp.value/100);
+  $('tmpV').textContent=t.toFixed(2);
+  let s=0;const q=BASE.map(([w,p])=>{const v=Math.pow(p,1/t);s+=v;return [w,v]});
+  bars($('tmpDemo'),q.map(([w,v])=>[w,v/s]),pc);
+}
+if(tmp){tmp.addEventListener('input',drawTmp);drawTmp()}
+
+/* ---------- ch1: token estimate ---------- */
+function tokEst(){
+  const s=$('tokIn').value;
+  const jp=(s.match(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff]/g)||[]).length;
+  const other=s.length-jp;
+  const t=Math.round(jp*1.1+other/3.6);
+  $('tkChars').textContent=s.length.toLocaleString()+' 文字';
+  $('tkTok').textContent=t.toLocaleString()+' トークン';
+}
+if($('tokIn')){$('tokIn').addEventListener('input',tokEst);tokEst()}
+
+/* ---------- ch3: quadratic cost ---------- */
+const ctxLen=$('ctxLen');
+function drawCtx(){
+  const k=+ctxLen.value, n=k*1000;
+  $('ctxV').textContent=n.toLocaleString();
+  const r=k*k;
+  $('ctxCost').textContent=r>=1000?Math.round(r).toLocaleString()+' 倍':r.toFixed(r<10?1:0)+' 倍';
+}
+if(ctxLen){ctxLen.addEventListener('input',drawCtx);drawCtx()}
+
+/* ---------- ch6: memory & speed calculator ---------- */
+const prm=$('prm'),bits=$('bits'),bw=$('bw');
+function calc(){
+  const b=+prm.value, by=+bits.value, band=+bw.value;
+  const size=b*by;
+  const need=size*1.6+10;
+  const theo=band/size;
+  $('prmV').textContent=b+'B';
+  $('rSize').textContent=size.toFixed(1)+' GB';
+  $('rNeed').textContent=Math.ceil(need)+' GB 程度';
+  $('rTheo').textContent=theo.toFixed(theo<10?1:0)+' トークン/秒';
+  $('rReal').textContent=(theo*0.65).toFixed(theo<15?1:0)+' トークン/秒';
+}
+if(prm){[prm,bits,bw].forEach(e=>e.addEventListener('input',calc));calc()}
+
+/* ---------- appendix: quiz ---------- */
+const Q=[
+{c:1,q:'LLMの学習三段階のうち、知識の大半が獲得されるのは？',o:['事前学習','指示調整','RLHF','三段階に均等'],a:0,e:'データ量の桁が決定的です。事前学習は数兆トークン、指示調整は数万件。5〜6桁の開きがあり、後半で世界知識を足すことは原理的に不可能です。'},
+{c:1,q:'LLMが文章を生成するとき、実際にやっていることは？',o:['学習データから最も近い文章を検索している','次のトークンの確率分布を計算し、そこから1つ選んでいる','内部の知識データベースを照会している','文法規則に従って文を組み立てている'],a:1,e:'出力は常に確率分布です。事実を検証する仕組みは入っておらず、これがハルシネーションの根本原因になります。'},
+{c:1,q:'temperatureを0.1など低く設定すると何が起きる？',o:['モデルが賢くなり誤りが減る','知識量が増えハルシネーションが止まる','確率の高い語に偏り安定するが、単調になる','生成速度が速くなる'],a:2,e:'分布そのものは変わらず、そこからの選び方だけが変わります。サイコロの出目を選ぶルールを変えているだけで、サイコロは同じです。'},
+{c:1,q:'ハルシネーションが起きる根本的な理由は？',o:['量子化による精度劣化','確率で次の語を予測しており、事実を検証する仕組みを持たないため','メモリ不足','学習データが古いだけで、最新版なら正しく答える'],a:1,e:'構造上の問題なので、モデルを大きくしても根本的には消えません。消すには外から正しい資料を渡す必要があります。'},
+{c:2,q:'事前学習で人手のラベル付けが不要なのはなぜ？',o:['正解がなくても学習できる特殊なアルゴリズムだから','別のAIがラベルを付けてくれるから','文章の一部を隠せば、隠した部分そのものが正解になるから','事前学習は精度を求めないから'],a:2,e:'計算の中身は教師あり学習と同じで、違うのは正解の調達方法だけ。この差がデータ規模に5桁の開きを生みました。'},
+{c:2,q:'70Bの「パラメータ700億個」の実体は？',o:['入力された文章をベクトル化した結果','学習データの文章そのもの','変換のルールを決める固定の数値。誰が使っても同じ','会話ごとに更新される調整値'],a:2,e:'パラメータは固定です。入力ごとに変わるのはベクトルやKVキャッシュの方。だから容量計算が成り立ちます。'},
+{c:2,q:'学習時に発生する「勾配」はいくつ発生する？',o:['全体で数十個程度','パラメータと同じ個数','トークン数と同じ個数','学習データの件数と同じ'],a:1,e:'最適化器の状態も同数以上持つため、学習時は推論の3〜4倍のメモリが必要になります。LoRAが有効なのは、動かす対象を絞れば持つべき勾配も減るからです。'},
+{c:2,q:'埋め込み表の「行数」が意味するものは？',o:['1語を表す数値の個数','語彙の種類数','層の数','学習回数'],a:1,e:'行数＝語彙の種類数（約10万）、列数＝次元数（約4000）。行は語彙の広さ、列は表現の解像度で、別々の軸です。'},
+{c:2,q:'単語のベクトルで、意味の近い言葉が近い位置に配置されるのはなぜ？',o:['辞書データを埋め込んであるから','事前学習を通じて、そうなるよう数値が調整されたから','人が次元ごとの意味を定義したから','文法規則から自動的に導かれるから'],a:1,e:'誰も「圧縮とポンプを近づけろ」とは命令していません。予測誤差を減らそうとした結果、勝手にそうなりました。'},
+{c:3,q:'自己注意が可能にした最も本質的なことは？',o:['意味を理解する仕組みを構造に組み込んだ','文法規則を効率よく適用できるようになった','並列処理ができるので大規模化が可能になった','少ないデータで学習できるようになった'],a:2,e:'並列処理できる → 大規模化できる → 大量データで学習できる → 意味表現が獲得される。この順序です。構造自体に意味理解は入っていません。'},
+{c:3,q:'RNNで並列処理ができなかった理由は？',o:['メモリ使用量が大きすぎたから','前の単語の処理結果を次に引き継ぐ構造だったから','行列計算を使っていなかったから','トークン化をしていなかったから'],a:1,e:'バトンの引き継ぎがあるので順番待ちが発生します。自己注意は引き継ぎをやめ、各トークンが独立に全体を見に行く方式にしました。'},
+{c:3,q:'プロンプトに渡す文章の長さを2倍にすると、自己注意の計算量はおよそ何倍？',o:['約1倍','約2倍','約4倍','約8倍'],a:2,e:'全トークン対全トークンの総当たりなので、系列長の2乗に比例します。10語なら100通り、20語なら400通り。'},
+{c:3,q:'コンテキスト長を伸ばしたとき、モデルサイズ（重みの容量）は？',o:['比例して増える','2乗で増える','変わらない。ただしKVキャッシュが増え、計算量は約4倍になる','半分になる'],a:2,e:'重みは装置そのものなので、通す文章の長さで変わりません。容量と計算量は別の軸です。'},
+{c:3,q:'コンテキスト長に含まれるのはどれ？',o:['今回の入力だけ','これまでに送ったプロンプトの個数','システムプロンプト、会話履歴全体、今回の入力、検索してきた資料の全部','モデルが学習したデータと今回の入力'],a:2,e:'LLMに記憶はなく、毎回会話の最初から全部を読み直しています。だから会話が進むほど長くなり続けます。'},
+{c:3,q:'KVキャッシュは何のために存在する？',o:['過去の会話を圧縮して保存し、メモリを節約するため','モデルの重みを一時的に退避しておくため','既に読んだトークンの計算結果を保存し、毎回再計算する無駄を防ぐため','量子化で失われた精度を補うため'],a:2,e:'会話が長くなるほど積み上がってメモリを食います。モデル35GBに加えて余裕を見る必要があったのはこのためです。'},
+{c:4,q:'YOLOが従来手法より圧倒的に速い根本的な理由は？',o:['画像を圧縮して解像度を下げているから','マスの数が固定なので、物体の数に関係なく計算量が一定だから','ニューラルネットを使わない軽量な計算だから','事前に物体の位置を記憶しているから'],a:1,e:'探索の問題を、決まった数の数値を埋める問題に作り替えました。処理時間が予測可能になったことが、リアルタイム処理を成立させました。'},
+{c:4,q:'YOLOで、ある物体をどのマスが担当するかはどう決まる？',o:['物体が重なっているマス全てが担当する','物体の面積が最も大きいマスが担当する','物体の中心が入っている1マスが担当する','左上のマスから順番に割り当てられる'],a:2,e:'中心という一点で決めれば担当が一意に定まり、学習時に誤差を計算できます。このルールが小さい物体の密集に弱い原因でもあります。'},
+{c:4,q:'YOLOで同じ物体に枠が5個重なって出る。最初にやるべきは？',o:['学習データを増やして再学習する','NMSのIoU閾値を下げる','グリッドの分割数を増やす','量子化のビット数を上げる'],a:1,e:'枠の重複は正常な挙動です。NMSはネットワークの外側の後処理なので、再学習なしでパラメータを変えるだけで直ります。'},
+{c:4,q:'教師あり学習と自己教師あり学習の本質的な違いは？',o:['正解を人が作るか、データから自動で切り出すか','誤差を計算するかしないか','ニューラルネットを使うか使わないか','重みを更新するかしないか'],a:0,e:'計算の中身は同じです。正解の調達方法の差が、データ規模に5桁の開きを生みました。'},
+{c:4,q:'Vision Transformerが画像をTransformerで扱うためにした工夫は？',o:['画像を小さな正方形に切り、それぞれを単語と同じトークンとして扱う','画像を一度文章に変換してから処理する','畳み込みで特徴抽出した後にTransformerに渡す','ピクセル1つをそのまま1トークンとして扱う'],a:0,e:'ピクセル単位だと224×224で5万トークンを超え、2乗の計算量で破綻します。パッチに切るのは計算量を成立させるための必然です。'},
+{c:4,q:'「苦い教訓（The Bitter Lesson）」が指す内容は？',o:['アルゴリズムを工夫するほど性能が上がる','小さいモデルの方が常に効率が良い','人間の監督が多いほど精度が上がる','構造に領域知識を埋め込むより、構造を最小限にして規模を上げた方が勝つ'],a:3,e:'画像ではViTがCNNを、言語ではLLMが文法規則を上回りました。ただし物量を投じられない制約下では、今も設計の巧みさが効きます。'},
+{c:5,q:'毎月改訂される社内規程を参照させ、根拠条項も示させたい。適切なのは？',o:['毎月ファインチューニングし直す','RAGで検索して渡す','より大きいモデルに替える','temperatureを下げる'],a:1,e:'頻繁な更新と出典の提示、どちらもRAG確定の目印です。ファインチューニングは知識が重みに溶け込むため出典を示せません。'},
+{c:5,q:'社内報告書の書式と口調を揃えさせたい。適しているのは？',o:['RAGで過去の報告書を検索させる','ファインチューニングで過去の報告書を学習させる','より大きいモデルに替える','temperatureを上げる'],a:1,e:'変えたいのが振る舞いなのでファインチューニングです。ただし見本を数本プロンプトに貼るだけで足りることも多いので、まずそちらを試します。'},
+{c:5,q:'RAGで、資料にあるはずの内容を「資料にない」と答える。原因として考えにくいのは？',o:['文書の分割で文脈が切れている','検索で拾う件数が少なすぎる','モデルのパラメータ数が足りない','索引にその文書が入っていない'],a:2,e:'「資料にない」と答えている時点で生成側は正常です。問題は検索側にあり、モデルを大きくするのは遠回りです。'},
+{c:5,q:'RAGの不調で、検索側と生成側のどちらが原因かを切り分ける最速の方法は？',o:['モデルを大きいものに替えて比べる','検索だけを単独で実行し、何が拾われたか見る','プロンプトの書き方を工夫する','量子化を解除する'],a:1,e:'該当箇所が出てくるなら生成側、出てこないなら検索側。推測で設定をいじる前に、どちらの問題かを確定させます。'},
+{c:5,q:'ベクトル検索が通常のSQL検索と違う点は？',o:['検索が常に速い','文字が一致しなくても、意味が近ければ見つかる','データを圧縮して保存する','複数テーブルを繋げる'],a:1,e:'「圧縮機の調子が悪い」で「コンプレッサーの異常」を見つけられます。文章をベクトル化し、方向の近さで探しています。'},
+{c:6,q:'70Bのモデルを4bit量子化した場合、必要なメモリはおよそ？',o:['17.5GB','35GB','70GB','140GB'],a:1,e:'700億個 × 4ビット ÷ 8 ＝ 350億バイト ≒ 35GB。1バイト＝8ビットなので、4ビット＝0.5バイトです。'},
+{c:6,q:'帯域614GB/sのマシンで、4bit量子化した30Bモデルを動かす。生成速度の目安は？',o:['秒約4トークン','秒約25トークン','秒約100トークン','帯域からは見積もれない'],a:1,e:'30B×0.5＝15GB。614÷15≒41回/秒が理論値で、実効6〜7割で秒25トークン前後です。'},
+{c:6,q:'8bit量子化を4bitに下げると何が起きる？',o:['メモリが半分になり、速度は上がり、品質はわずかに落ちる','メモリが半分になり、速度も品質も落ちる','メモリも速度も変わらず、品質だけ落ちる','すべて改善する'],a:0,e:'量子化で落ちるのは品質だけです。読み出す量が減るので速度はむしろ上がります。「量子化＝性能が落ちる」とまとめると判断を誤ります。'},
+{c:6,q:'64GBのマシンで70Bの推論はできるのに、全パラメータの微調整ができない理由は？',o:['微調整では量子化が無効になるから','重みに加えて勾配と最適化器の状態を持つため、推論の数倍必要だから','微調整はGPUを使わないから','学習データを全部メモリに載せる必要があるから'],a:1,e:'勾配はパラメータと同数発生し、最適化器の状態も同数以上持ちます。だからLoRAで動かす対象を1%以下に絞ります。'},
+{c:6,q:'64GBのマシンで70Bを4bitで動かしている。生成を速くしたい。効果があるのは？',o:['量子化を8bitに上げる','30B級の小さいモデルに替える','外付けSSDを高速なものに替える','ストレージ容量を増やす'],a:1,e:'速度＝帯域÷モデル容量。帯域は固定なので、変えられるのは分母だけです。SSDが効くのは起動時の読み込みだけで、生成中は無関係です。'},
+{c:7,q:'MCPが解決する問題は？',o:['モデルの推論速度を上げること','AIアプリと外部システムの組み合わせ爆発（M×N）をM+Nにすること','学習データを増やすこと','量子化の精度劣化を抑えること'],a:1,e:'USBと同じ発想です。規格を1つ挟むことで、AI側を入れ替えても下の実装が無傷で済みます。'},
+{c:7,q:'iOSアプリにAI機能を、通信ゼロ・料金ゼロで入れたい。正しい理解は？',o:['自宅のMacをサーバーにすれば通信は発生しない','端末内で実行するしかない。Appleのフレームワークか、Core MLに変換したモデルを同梱','クラウドAPIの無料枠を使えば料金はかからない','原理的に不可能'],a:1,e:'自宅サーバーは接続先が変わるだけで外部APIのままです。通信をゼロにするには、モデルをアプリの中に入れるしかありません。'},
+{c:7,q:'手元にローカルLLMを持つことで消えるコストは？',o:['アプリのユーザーが使う分も含めた全てのAPI料金','開発側のコストだけ。ユーザー側は端末内実行かAPIの二択','サーバーの運用コスト','アプリの審査コスト'],a:1,e:'プロンプトの試行錯誤やデータ前処理は自分が回す処理なのでローカルで完結します。ユーザーが使う場面は別問題です。'},
+{c:8,q:'nanoGPTの学習でlossが約4.2から始まるのはなぜ？',o:['初期値の設定ミス','65種類からランダムに選んだときの損失 ln(65) がほぼ4.2だから','学習率が高すぎるから','データが少なすぎるから'],a:1,e:'「何も知らない状態」の数値が理論通りに出ています。ここから下がっていくのが学習が成立している証拠です。'},
+{c:8,q:'学習ログで val loss を見る目的は？',o:['学習の速度を測るため','丸暗記していないかを検出するため','メモリ使用量を見るため','GPUの温度を見るため'],a:1,e:'valは学習に一度も使わない抜き打ちテストです。train だけ下がって val が上がり始めたら、暗記に入った合図です。'}
+];
+const CH=[{k:0,n:'全部'},{k:1,n:'第1章'},{k:2,n:'第2章'},{k:3,n:'第3章'},{k:4,n:'第4章'},{k:5,n:'第5章'},{k:6,n:'第6章'},{k:7,n:'第7章'},{k:8,n:'第8章'}];
+let pool=[],qi=0,hit=0,done=0,filt=0;
+
+function buildTabs(){
+  const t=$('qtabs');if(!t)return;
+  t.innerHTML=CH.map(c=>'<button data-k="'+c.k+'" aria-selected="'+(c.k===filt)+'">'+c.n+'</button>').join('');
+  t.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{filt=+b.dataset.k;buildTabs();start()}));
+}
+function start(){
+  pool=Q.filter(q=>!filt||q.c===filt).map(q=>q).sort(()=>Math.random()-0.5);
+  qi=0;hit=0;done=0;render();
+}
+function render(){
+  if(!$('qText'))return;
+  if(qi>=pool.length){
+    $('qMeta').textContent='おわり';
+    $('qText').textContent='全'+pool.length+'問、正答 '+hit+' 問';
+    $('qOpts').innerHTML='';$('qExpl').hidden=true;$('qNext').hidden=true;
+    $('qScore').textContent=hit+' / '+done;return;
+  }
+  const q=pool[qi];
+  $('qMeta').textContent='第'+q.c+'章　'+(qi+1)+' / '+pool.length;
+  $('qText').textContent=q.q;
+  $('qExpl').hidden=true;$('qNext').hidden=true;
+  $('qOpts').innerHTML=q.o.map((o,i)=>'<button data-i="'+i+'">'+o+'</button>').join('');
+  $('qOpts').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>answer(+b.dataset.i)));
+  $('qScore').textContent=hit+' / '+done;
+}
+function answer(i){
+  const q=pool[qi];done++;
+  if(i===q.a)hit++;
+  $('qOpts').querySelectorAll('button').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.a)b.classList.add('ok');
+    else if(j===i)b.classList.add('ng');
+  });
+  $('qExpl').innerHTML='<b>'+(i===q.a?'正解':'不正解')+'</b> — '+q.e;
+  $('qExpl').hidden=false;$('qNext').hidden=false;
+  $('qScore').textContent=hit+' / '+done;
+}
+if($('qNext')){
+  $('qNext').addEventListener('click',()=>{qi++;render()});
+  $('qReset').addEventListener('click',start);
+  buildTabs();start();
+}
+})();
+</script>
+</body>
+</html>
